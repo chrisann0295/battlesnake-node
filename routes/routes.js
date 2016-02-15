@@ -1,21 +1,29 @@
 var config  = require('../config.json');
 var express = require('express');
 var router  = express.Router();
+var Cell  = require('../cell.js')
 
 //global snake info
 var total_score = 0;
+
+//current game
+//var currId = "";
+var currId = "testing";
+
 
 //map holds state of all running games (keys are the gameid)
 var games = {};
 
 //example game state
 var game = {
-  id: "example",
+  id: "testing",
   state: "alive",
   coords: [[0,0]],
-  score: 0
+  score: 0,
+	width:0,
+	height:0
 }
-games["example"] = game;
+games["testing"] = game;
 
 // Get the state of the snake
 router.get(config.routes.state, function (req, res) {
@@ -27,20 +35,21 @@ router.get(config.routes.state, function (req, res) {
     color: config.snake.color,
     head_url: config.snake.head_url,
     taunt: config.snake.taunt.state,
-    state: "alive",
-    coords: [[0, 0], [0, 1], [0, 2], [1, 2]],
-    score: 4
+    state: games[currId].state,
+    coords: games[currId].coords,
+    score: games[currId].score
   };
 
 	//return all game states
-  return res.json(games);
+  return res.json(data);
 });
 
 // Start
 router.post(config.routes.start, function (req, res) {
 
   //log the game id
-  console.log('Game ID:', req.body.game_id);   
+  console.log('Game ID:', req.body.game_id);
+  currId = req.body.game_id;   
 
   //create new game state
   games[req.body.game_id] = {
@@ -84,12 +93,30 @@ router.post(config.routes.move, function (req, res) {
 		var snakes = req.body.snakes;
 		var food = req.body.food;
 
+		var mysnake;
 
+    //find my snake
+		for(i = 0; i < snakes.length; i++){
+			if(snakes[i].name === config.snake.name){
+				mysnake = snakes[i];
+			}
+		}
+
+		//is snake dead?
+    if(mysnake.state === "dead"){
+			//do what?????
+		}else{
+
+			//Figure out where to move
+			mymove = "up";
+
+		}
+	
 
 
 		// Response data
 		var data = {
-		  move: 'up', // one of: ["up", "down", "left", "right"]
+		  move: mymove, // one of: ["up", "down", "left", "right"]
 		  taunt: 'What?!' || config.snake.taunt.move
 		};
 
@@ -104,7 +131,8 @@ router.post(config.routes.end, function (req, res) {
   //update global score
   total_score += games[gameid].score;
   //delete game state from map
-  games[gameid] = null;
+  delete games[gameid];
+  currId = "";
 
   // We don't need a response so just send back a 200
   res.status(200);
