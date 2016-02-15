@@ -10,10 +10,10 @@ var games = {};
 
 //example game state
 var game = {
-  id: "example";
-  state: "alive";
-  coords: [[0,0]];
-  score: 0;
+  id: "example",
+  state: "alive",
+  coords: [[0,0]],
+  score: 0
 }
 games["example"] = game;
 
@@ -47,7 +47,7 @@ router.post(config.routes.start, function (req, res) {
     id:req.body.game_id,
     state: "alive",
     coords: [],
-    score:0;
+    score:0
   }
 
 	games[req.body.game_id].width = req.body.width;
