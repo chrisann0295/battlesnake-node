@@ -40,6 +40,7 @@ router.get(config.routes.state, function(req, res) {
         state: games[currId].state,
         coords: games[currId].coords,
         score: games[currId].score
+	turn: games[currId].score
     };
 
     //return all game states
@@ -50,18 +51,18 @@ router.get(config.routes.state, function(req, res) {
 router.post(config.routes.start, function(req, res) {
 
     //log the game id
-    console.log('Game ID:', req.body.game_id);
-    currId = req.body.game_id;
+    console.log('Game ID:', req.body.game);
+    currId = req.body.game;
 
     //create new game state
-    games[req.body.game_id] = {
-        id: req.body.game_id,
+    games[req.body.game] = {
+        id: req.body.game,
         state: "alive",
         coords: [],
         score: 0,
 	turn: 0,
 	width: req.body.width,
-	height: req.body.height
+	height: req.body.hght
     }
 
 
@@ -76,11 +77,45 @@ router.post(config.routes.start, function(req, res) {
     return res.json(data);
 });
 
+
+function genArray(h,w,snakes,food,walls,coin){
+	var arr = [h][w]; //0,0 to h-1,w-1
+	var health = 100; //TODO call health()
+	var food = (100-health)*2 
+	vals = {"snake":-200, "wall":-300, "coin":100, "food":food}
+	
+	for(i=0; i<food.length;i++){
+		coords = food[i]		
+		arr[coords[0]][coords[1]] = vals['food']
+	}
+
+	for(i=0; i<snakes.length;i++){
+		asnake = snakes[i]
+		for(j=0; j<asnake.length;j++){
+			coords = asnake[i][j]		
+			arr[coords[0]][coords[1]] = vals['snake']
+		}
+	}
+
+	for(i=0; i<walls.length;i++){
+		coords = walls[i]		
+		arr[coords[0]][coords[1]] = vals['wall']
+	}
+
+	for(i=0; i<gold.length;i++){
+		coords = gold[i]		
+		arr[coords[0]][coords[1]] = vals['coin']
+	}
+	return arr
+
+}
+
 // Move
 router.post(config.routes.move, function(req, res) {
-    // Do something here to generate your move
+    
 
-    var gameid = req.body.game_id;
+    //find game state in hash table
+    var gameid = req.body.game;
     var currState = games[gameid];
 
     //catch games that have ended/haven't begun
@@ -91,10 +126,17 @@ router.post(config.routes.move, function(req, res) {
 
     } else {
 
-        var board = req.body.board;
+ 
         var turn = req.body.turn;
         var snakes = req.body.snakes;
         var food = req.body.food;
+		var walls = req.body.walls;
+		var gold = req.body.gold; 
+
+		var arr = genArr(currState.height,currState.width,,snake,food,walls,gold);
+
+		console.log(arr)
+ 	
 
         var mysnake;
 
