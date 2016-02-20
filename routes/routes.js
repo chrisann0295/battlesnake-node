@@ -3,11 +3,10 @@ var express = require('express');
 var router = express.Router();
 var Cell = require('../cell.js')
 var Gen = require('../gen.js')
+var moveCalculator = require('../moveCalculator')
 
 //global snake info
 var total_score = 0;
-
-
 
 //map holds state of all running games (keys are the gameid)
 var games = {};
@@ -27,46 +26,45 @@ games["testing"] = game;
 
 // Get the state of the snake
 router.get(config.routes.state, function(req, res) {
-    // Do something here to calculate the returned state
+  // Do something here to calculate the returned state
 
-    // Response data
-    var data = {
-        name: config.snake.name,
-        color: config.snake.color,
-        head_url: config.snake.head_url,
-        taunt: config.snake.taunt.state,
-        games: games
-    };
+  // Response data
+  var data = {
+      name: config.snake.name,
+      color: config.snake.color,
+      head_url: config.snake.head_url,
+      taunt: config.snake.taunt.state,
+      games: games
+  };
 
-    //return all game states
-    return res.json(data);
+  //return all game states
+  return res.json(data);
 });
 
 // Start
 router.post(config.routes.start, function(req, res) {
 
     //log the game id
-    console.log('Game ID:', req.body.game);
-	gid = req.body.game;
+  console.log('Game ID:', req.body.game);
+  gid = req.body.game;
 
-    //create new game state
-    games[gid] = {
-        id: gid,
-        state: "alive",
-        coords: [],
-        score: 0,
-		turn: 0,
-		width: req.body.width,
-		height: req.body.height
-    }
-
+  //create new game state
+  games[gid] = {
+    id: gid,
+    state: "alive",
+    coords: [],
+    score: 0,
+    turn: 0,
+    width: req.body.width,
+    height: req.body.height
+  }
 
     // Response data
     var data = {
-        name: config.snake.name,
-        color: config.snake.color,
-        head_url: config.snake.head_url,
-        taunt: config.snake.taunt.start
+      name: config.snake.name,
+      color: config.snake.color,
+      head_url: config.snake.head_url,
+      taunt: config.snake.taunt.start
     };
 
     return res.json(data);
@@ -76,8 +74,6 @@ router.post(config.routes.start, function(req, res) {
 
 // Move
 router.post(config.routes.move, function(req, res) {
-    
-
     //find game state in hash table
     var gameid = req.body.game;
     var currState = games[gameid];
@@ -91,43 +87,44 @@ router.post(config.routes.move, function(req, res) {
     } else {
 
  
-        var turn = req.body.turn;
-        var snakes = req.body.snakes;
-        var food = req.body.food;
-		var walls = req.body.walls;
-		var gold = req.body.gold; 
+    var turn = req.body.turn;
+    var snakes = req.body.snakes;
+    var food = req.body.food;
+    var walls = req.body.walls;
+    var gold = req.body.gold; 
 
-		var mysnake;
+    // Board dimensions
+    var boardHeight = req.height;
+    var boardWidth = req.width;
 
-        //find my snake
-        for (i = 0; i < snakes.length; i++) {
-            if (snakes[i].id === "a1e0221f-66e8-4f79-a125-6abdef413a9a") {
-                mysnake = snakes[i];
-            }
+    var mysnake;
+
+    //find my snake
+    for (i = 0; i < snakes.length; i++) {
+        if (snakes[i].id === "a1e0221f-66e8-4f79-a125-6abdef413a9a") {
+            mysnake = snakes[i];
         }
-		myhead = mysnake[0]
+    }
 
-		//2d array of weights
-		var W = Gen.genW(currState.height,currState.width,snake,food,walls,gold);
-		
-		//2d array of distances from snake head
-		var D = Gen.genD(myhead[0],myhead[1])
-		console.log(arr)
+    var myHead = mysnake.coords[0];
 
-		
-		//calculate move here
-		
+    //2d array of weights
+    
+    //2d array of distances from snake head
+    // var D = Gen.genD(myhead[0],myhead[1])
+    console.log(arr)
 
-	
+    
+    //calculate move here
 
         //is snake dead?
         if (mysnake.status === "dead") {
-            //do what?????
-			//mymove = "up"
+          res.status(404);
+          
         } else {
 
-            //Figure out where to move
-            mymove = "up";
+          var weightMatrix = Gen.generateWeightMatrix(currState.width, currState.height, snake,food,walls,gold, mysnake.health);
+          mymove = moveCalculator(myHead[0], myHead[1], boardWidth, boardHeight, weightMatrix);
 
         }
 
