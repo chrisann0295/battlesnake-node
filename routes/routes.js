@@ -46,16 +46,17 @@ router.post(config.routes.start, function(req, res) {
 
     //log the game id
     console.log('Game ID:', req.body.game);
+	gid = req.body.game;
 
     //create new game state
-    games[req.body.game] = {
-        id: req.body.game,
+    games[gid] = {
+        id: gid,
         state: "alive",
         coords: [],
         score: 0,
-	turn: 0,
-	width: req.body.width,
-	height: req.body.hght
+		turn: 0,
+		width: req.body.width,
+		height: req.body.height
     }
 
 
@@ -143,7 +144,7 @@ router.post(config.routes.move, function(req, res) {
         //is snake dead?
         if (mysnake.state === "dead") {
             //do what?????
-			mymove = "up"
+			//mymove = "up"
         } else {
 
             //Figure out where to move
@@ -166,7 +167,7 @@ router.post(config.routes.move, function(req, res) {
 // End the session
 router.post(config.routes.end, function(req, res) {
 
-    var gameid = req.body.game_id;
+    var gameid = req.body.game;
     //update global score
     total_score += games[gameid].score;
     //delete game state from map
