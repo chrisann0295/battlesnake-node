@@ -33,7 +33,7 @@ exports.genW = function(h,w,snakes,food,walls,coin){
 
 
 
-module.genDW(x,y,arr) = function{
+exports.genDW = function(x,y,arr){
 	height = arr[0].length	
 	width = arr.length
 	dwArr = arr
@@ -49,7 +49,7 @@ module.genDW(x,y,arr) = function{
 	return dwArr
 }
 
-module.genD(x,y) = function{
+exports.genD = function(x,y){
 	height = arr[0].length	
 	width = arr.length
 	dwArr = arr
