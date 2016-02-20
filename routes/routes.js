@@ -117,7 +117,7 @@ router.post(config.routes.move, function(req, res) {
 	
 
         //is snake dead?
-        if (mysnake.state === "dead") {
+        if (mysnake.status === "dead") {
             //do what?????
 			//mymove = "up"
         } else {
