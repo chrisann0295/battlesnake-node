@@ -142,7 +142,7 @@ router.post(config.routes.move, function(req, res) {
 
         //find my snake
         for (i = 0; i < snakes.length; i++) {
-            if (snakes[i].name === config.snake.name) {
+            if (snakes[i].id === "a1e0221f-66e8-4f79-a125-6abdef413a9a") {
                 mysnake = snakes[i];
             }
         }
