@@ -38,8 +38,8 @@ exports.genDW = function(x,y,arr){
 	width = arr.length
 	dwArr = arr
 	
-	for(a=0;a<width,a++){
-		for(b=0;b<height,b++){
+	for(a=0;a<width;a++){
+		for(b=0;b<height;b++){
 			distx = Math.abs((a-x))
 			disty = Math.abs((b-y))
 			dwArr[a,b] = (distx+disty)*arr[a,b]
@@ -54,8 +54,8 @@ exports.genD = function(x,y){
 	width = arr.length
 	dwArr = arr
 	
-	for(a=0;a<width,a++){
-		for(b=0;b<height,b++){
+	for(a=0;a<width;a++){
+		for(b=0;b<height;b++){
 			distx = Math.abs((a-x))
 			disty = Math.abs((b-y))
 			dwArr[a,b] = (distx+disty)
