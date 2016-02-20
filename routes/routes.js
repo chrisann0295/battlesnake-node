@@ -114,6 +114,10 @@ router.post(config.routes.move, function(req, res) {
 		var D = Gen.genD(myhead[0],myhead[1])
 		console.log(arr)
 
+		
+		//calculate move here
+		
+
 	
 
         //is snake dead?
