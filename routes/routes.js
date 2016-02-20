@@ -97,12 +97,7 @@ router.post(config.routes.move, function(req, res) {
 		var walls = req.body.walls;
 		var gold = req.body.gold; 
 
-		var arr = Gen.genArr(currState.height,currState.width,,snake,food,walls,gold);
-
-		console.log(arr)
- 	
-
-        var mysnake;
+		var mysnake;
 
         //find my snake
         for (i = 0; i < snakes.length; i++) {
@@ -110,6 +105,15 @@ router.post(config.routes.move, function(req, res) {
                 mysnake = snakes[i];
             }
         }
+		myhead = mysnake[0]
+
+		//2d array of weights
+		var W = Gen.genW(currState.height,currState.width,,snake,food,walls,gold);
+		
+		//2d array of distances from snake head
+		var D = Gen.genD(myhead[0],myhead[1])
+		console.log(arr)
+
 
         //is snake dead?
         if (mysnake.state === "dead") {

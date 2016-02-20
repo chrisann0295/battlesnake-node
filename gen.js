@@ -1,4 +1,4 @@
-exports.genArray = function(h,w,snakes,food,walls,coin){
+exports.genW = function(h,w,snakes,food,walls,coin){
 	var arr = [h][w]; //0,0 to h-1,w-1
 	var health = 100; //TODO call health()
 	var food = (100-health)*2 
@@ -28,5 +28,40 @@ exports.genArray = function(h,w,snakes,food,walls,coin){
 	}
 	return arr
 
+}
+
+
+
+
+module.genDW(x,y,arr) = function{
+	height = arr[0].length	
+	width = arr.length
+	dwArr = arr
+	
+	for(a=0;a<width,a++){
+		for(b=0;b<height,b++){
+			distx = Math.abs((a-x))
+			disty = Math.abs((b-y))
+			dwArr[a,b] = (distx+disty)*arr[a,b]
+		}
+	}
+
+	return dwArr
+}
+
+module.genD(x,y) = function{
+	height = arr[0].length	
+	width = arr.length
+	dwArr = arr
+	
+	for(a=0;a<width,a++){
+		for(b=0;b<height,b++){
+			distx = Math.abs((a-x))
+			disty = Math.abs((b-y))
+			dwArr[a,b] = (distx+disty)
+		}
+	}
+
+	return dwArr
 }
 
