@@ -6,9 +6,6 @@ var Cell = require('../cell.js')
 //global snake info
 var total_score = 0;
 
-//current game
-//var currId = "";
-var currId = "testing";
 
 
 //map holds state of all running games (keys are the gameid)
@@ -37,10 +34,7 @@ router.get(config.routes.state, function(req, res) {
         color: config.snake.color,
         head_url: config.snake.head_url,
         taunt: config.snake.taunt.state,
-        state: games[currId].state,
-        coords: games[currId].coords,
-        score: games[currId].score
-	turn: games[currId].score
+        games: games
     };
 
     //return all game states
@@ -52,7 +46,6 @@ router.post(config.routes.start, function(req, res) {
 
     //log the game id
     console.log('Game ID:', req.body.game);
-    currId = req.body.game;
 
     //create new game state
     games[req.body.game] = {
@@ -150,6 +143,7 @@ router.post(config.routes.move, function(req, res) {
         //is snake dead?
         if (mysnake.state === "dead") {
             //do what?????
+			mymove = "up"
         } else {
 
             //Figure out where to move
@@ -177,7 +171,6 @@ router.post(config.routes.end, function(req, res) {
     total_score += games[gameid].score;
     //delete game state from map
     delete games[gameid];
-    currId = "";
 
     // We don't need a response so just send back a 200
     res.status(200)
