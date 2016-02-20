@@ -8,9 +8,9 @@
     "end": "/end"
   },
   "snake" : {
-    "name": "tims-snake",
-    "color": "#ffffff",
-    "head_url": "http://battlesnake-node.herokuapp.com/",
+    "name": "bao",
+    "color": "#996633",
+    "head_url": "http://images.clipartpanda.com/snake-head-clip-art-black-and-white-BAW-SNAKE-05-R.png",
     "taunt": {
       "state": "Most serpently ready!!!",
       "move": "Outta my way snake!",
