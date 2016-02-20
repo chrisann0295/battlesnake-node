@@ -108,12 +108,13 @@ router.post(config.routes.move, function(req, res) {
 		myhead = mysnake[0]
 
 		//2d array of weights
-		var W = Gen.genW(currState.height,currState.width,,snake,food,walls,gold);
+		var W = Gen.genW(currState.height,currState.width,snake,food,walls,gold);
 		
 		//2d array of distances from snake head
 		var D = Gen.genD(myhead[0],myhead[1])
 		console.log(arr)
 
+	
 
         //is snake dead?
         if (mysnake.state === "dead") {
