@@ -206,81 +206,81 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 
 
 function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
-  var directionArray = [0,0,0,0];
+  var dir= {'west':false, 'east':false, 'north':false, 'south':false};
 
   console.log("Calculating our move")
   var tempX
     , tempY
     , distanceMatrix;
+	
+	distanceMatrix = generateDistanceMatrix(headX, headY, boardWidth, boardHeight);
+	
+	//find highest weight cell
+	dest = [headX,headY]
+	for (var x = 0; x < boardWidth; x++) {
+		for (var y = 0; y < boardHeight; y++) {
+			if(weightMatrix[x][y]*distanceMatrix[x][y] >=  weightMatrix[dest[0]][dest[1]]*distanceMatrix[dest[0]][dest[1]]){
+				dest = [x,y]
+			}
+			
+		}
+	}
+	
+	x = dest[0]
+	y = dest[1]
+	
+	if(x-headX > 0){
+		dir['west']=true
+	}else if(x-headX < 0){
+		dir['east']=true
+		 
+	}else{
+		
+		if(y-headY > 0){
+			dir['south']=true
+		
+		}else if(x-headX < 0){
+			dir['north']=true
+			 
+		}else{
+			//default
+			dir['south']=true
+		}
+		
+	}
 
-  for(var dir = 0; dir < directionArray.length; dir++) {
-    if (dir === 0) { // North
-      tempX = headX;
-      tempY = headY - 1;
-
-    } else if (dir === 1) { //East
-      tempX = headX + 1;
-      tempY = headY;
-
-    } else if (dir === 2) { //South
-      tempX = headX;
-      tempY = headY + 1;
-
-    } else { // West
-      tempX = headX - 1;
-      tempY = headY;
-    }
-  
-    distanceMatrix = generateDistanceMatrix(tempX, tempY, boardWidth, boardHeight);
-
-    for (var x = 0; x < boardWidth; x++) {
-      for (var y = 0; y < boardHeight; y++) {
-				//if(x !== headX && y !== headY){ //don't include current cell weight
-					directionArray[dir] = (weightMatrix[tempX][tempY]/distanceMatrix[tempX][tempY]);
-				//}
-        
-      }
-    }
-  }
 
   if (headX === 0) {
-    directionArray[3] = -9999999;
+    dir['west'] = false
   } 
 
   if (headX === boardWidth -1) {
-    directionArray[1] = -9999999;
+    dir['east'] = false
   }
 
   if (headY === 0) {
-    directionArray[0] = -9999999;
+    dir['north'] = false
   }
   if (headY === boardHeight - 1) {
-    directionArray[2] = -9999999;
+    dir['south'] = false
   }
 
-	console.log('Possible moves: ', directionArray)
-  var bestMove = 0;
-  for (var i = 0; i < 4; i++) {
-    if (directionArray[i] > directionArray[bestMove]) {
-      bestMove = i;
-    }
-  }
-
-  switch(bestMove) {
-    case 0: return "north"
-            break;
-
-    case 1: return "east"
-            break;
-
-    case 2: return "south"
-            break;
-
-    case 3: return "west"
-            break;
-  }
-
-  return null;
+	console.log('Possible moves: ', dir)
+  
+	if(dir['east'] ===true){
+		return "east"
+	}else if(dir['west'] ===true){
+		return "west"
+		
+	}else if(dir['south'] ===true){
+		return "south"
+		
+	}else if(dir['north'] ===true){
+		return "north"
+		
+	}else{
+		return null
+	}
 
 };
 
