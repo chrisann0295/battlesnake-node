@@ -226,8 +226,8 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 		}
 	}
 	
-	x = dest[0]
-	y = dest[1]
+	x = dest[1]
+	y = dest[0]
 	
 	console.log("dest: ",dest)
 	
