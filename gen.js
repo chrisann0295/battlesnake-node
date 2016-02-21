@@ -26,6 +26,9 @@ exports.generateWeightMatrix = function(width, height, snakes, food, walls, coin
 		coords = gold[i]		
 		arr[coords[0]][coords[1]] = vals['coin']
 	}
+
+	console.log("generateWeightMatrix" + arr)
+
 	return arr
 
 }
@@ -47,7 +50,7 @@ exports.genDW = function(x,y,arr){
 	return dwArr
 }
 
-exports.generateDistanceMatrix = function(x,y, height, width){
+exports.generateDistanceMatrix = function(x,y, width, height){
 	var distanceMatrix = [width][height];
 	
 	for(a=0; a<width; a++){
@@ -57,6 +60,8 @@ exports.generateDistanceMatrix = function(x,y, height, width){
 			distanceMatrix[a][b] = (distx+disty)
 		}
 	}
+
+	console.log("distanceMatrix" + distanceMatrix)
 
 	return distanceMatrix;
 }

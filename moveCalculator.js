@@ -24,7 +24,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
       tempY = headY;
     }
   
-    distanceMatrix = matrixGenerators.generateDistanceMatrix(tempX, tempY, boardHeight, boardWidth);
+    distanceMatrix = matrixGenerators.generateDistanceMatrix(tempX, tempY, boardWidth, boardHeight);
 
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
