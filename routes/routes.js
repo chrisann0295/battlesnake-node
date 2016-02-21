@@ -169,37 +169,42 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
       }    
   }
 
-	prettyPrint(arr)
+	console.log('init matrix complete')
+	
 	//weights for game objects
   //vals = {"snake":-200, "walls":-300, "gold":101, "food":100}
   
 	//add food to weight matrix
   for(i=0; i<food.length;i++){
     coords = food[i]    
-    arr[coords[0]][coords[1]] = 100
+    arr[coords[1]][coords[0]] = 100
   }
+	console.log('added food')
 
 	//add snakes to weight matrix
   for(i=0; i<snakes.length;i++){
     asnake = snakes[i]
     for(j=0; j<asnake.coords.length;j++){
       coords = asnake.coords[j]   
-      arr[coords[0]][coords[1]] = -200
+      arr[coords[1]][coords[0]] = -200
     }
   }
+	
+	console.log('added snakes')
 
 	//add walls to weight matrix
   for(i=0; i<walls.length;i++){
     coords = walls[i]   
-    arr[coords[0]][coords[1]] = -300
+    arr[coords[1]][coords[0]] = -300
   }
 
-
+	console.log('added walls')
 	//add gold to weight matrix
   for(i=0; i<gold.length;i++){
     coords = gold[i]    
-    arr[coords[0]][coords[1]] = 101
+    arr[coords[1]][coords[0]] = 101
   }
+	console.log('added gold')
 	
 	prettyPrint(arr)
 
