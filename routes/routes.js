@@ -37,6 +37,8 @@ router.get(config.routes.state, function(req, res) {
       games: games
   };
 
+
+  // console.log(data);
   //return all game states
   return res.json(data);
 });
@@ -74,7 +76,9 @@ router.post(config.routes.start, function(req, res) {
 
 // Move
 router.post(config.routes.move, function(req, res) {
-  console.log("####################INSIDE MOVE FUNCTION")
+
+
+  console.log("####################INSIDE MOVE FUNCTION", req.body)
     //find game state in hash table
     var gameid = req.body.game;
     var currState = games[gameid];
