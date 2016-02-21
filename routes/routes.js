@@ -12,17 +12,17 @@ var total_score = 0;
 var games = {};
 
 //example game state
-var game = {
-    id: "testing",
-    state: "alive",
-    coords: [
-        [0, 0]
-    ],
-    score: 0,
-    width: 30,
-    height: 20
-}
-games["testing"] = game;
+// var game = {
+//     id: "testing",
+//     state: "alive",
+//     coords: [
+//         [0, 0]
+//     ],
+//     score: 0,
+//     width: 30,
+//     height: 20
+// }
+// games["testing"] = game;
 
 // Get the state of the snake
 router.get(config.routes.state, function(req, res) {
