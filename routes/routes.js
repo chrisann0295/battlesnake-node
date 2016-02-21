@@ -236,7 +236,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
 				if(x !== headX && y !== headY){ //don't include current cell weight
-					directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]*distanceMatrix[x][y]);
+					directionArray[dir] = directionArray[dir] + (weightMatrix[tempX][tempY]*distanceMatrix[tempX][tempY]);
 				}
         
       }
