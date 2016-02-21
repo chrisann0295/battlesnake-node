@@ -75,7 +75,6 @@ router.post(config.routes.move, function(req, res) {
 	var food = req.body.food;
 	var walls = req.body.walls;
 	var gold = req.body.gold; 
-	consol
 	
 	console.log('Game data rec: ',(snakes&&food&&walls&&gold)!=='undefined')
 	console.log('Game data : ',snakes, food,walls,gold)
