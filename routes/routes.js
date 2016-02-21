@@ -75,9 +75,10 @@ router.post(config.routes.move, function(req, res) {
 	var food = req.body.food;
 	var walls = req.body.walls;
 	var gold = req.body.gold; 
+	consol
 	
 	console.log('Game data rec: ',(snakes&&food&&walls&&gold)!=='undefined')
-	
+	console.log('Game data : ',snakes, food,walls,gold)
 	// Board dimensions
 	var boardWidth = req.body.width;
 	var boardHeight = req.body.height;
@@ -104,7 +105,7 @@ router.post(config.routes.move, function(req, res) {
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
 	
 	console.log('-----------WM:----------- \n')
-	//prettyPrint(weightMatrix)
+	prettyPrint(weightMatrix)
 	console.log('\n-----------DM:----------- \n')
 	prettyPrint(distanceMatrix)
 	
@@ -192,13 +193,13 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 	
 	console.log('added snakes')
 	console.log(walls)
-		
-	//add walls to weight matrix
-  for(i=0; i<walls.length;i++){
-    coords = walls[i]   
-    arr[coords[1]][coords[0]] = -300
-  }
-
+	if(walls != "undefined"){
+		//add walls to weight matrix
+		for(i=0; i<walls.length;i++){
+			coords = walls[i]   
+			arr[coords[1]][coords[0]] = -300
+		}
+	}
 	console.log('added walls')
 	//add gold to weight matrix
   for(i=0; i<gold.length;i++){
