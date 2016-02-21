@@ -126,16 +126,13 @@ router.post(config.routes.move, function(req, res) {
        console.log('$$$$$$ mymove is:', mymove)
 
     }
-
-
-
         // Response data
         var data = {
             move: mymove, // one of: ["up", "down", "left", "right"]
             taunt: 'What?!' || config.snake.taunt.move
         };
 
-        return res.json(data);
+        return res.send(data);
     }
 });
 
@@ -202,8 +199,8 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 
 
 function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
-  var directionArray = [4];
-  
+  var directionArray = [0,0,0,0];
+
   console.log("$$$$$$$$$$$$$$$$$$ moveCalculator")
   var tempX
     , tempY
@@ -239,6 +236,26 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
     }
   }
 
+  if (headX === 0) {
+    console.log("$$$$$$$$$$$$")
+    directionArray[3] = -9999999;
+  } 
+
+  if (headX === boardWidth -1) {
+    console.log("$$$$$$$$$$$$wdew")
+    directionArray[1] = -9999999;
+  }
+
+  if (headY === 0) {
+    console.log("$$$$$$$$$$$$fdnfnf")
+    directionArray[0] = -9999999;
+  }
+  if (headY === boardHeight - 1) {
+    console.log("$$$$$$$$$$wkjdnwjkedwje$$")
+    directionArray[2] = -9999999;
+  }
+
+console.log(directionArray)
   var bestMove = 0;
   for (var i = 0; i < 4; i++) {
     if (directionArray[i] > directionArray[bestMove]) {
