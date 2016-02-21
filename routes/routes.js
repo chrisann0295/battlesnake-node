@@ -216,7 +216,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   for(var dir = 0; dir < directionArray.length; dir++) {
     if (dir === 0) { // North
       tempX = headX;
-      tempY = headY + 1;
+      tempY = headY - 1;
 
     } else if (dir === 1) { //East
       tempX = headX + 1;
@@ -224,7 +224,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 
     } else if (dir === 2) { //South
       tempX = headX;
-      tempY = headY - 1;
+      tempY = headY + 1;
 
     } else { // West
       tempX = headX - 1;
