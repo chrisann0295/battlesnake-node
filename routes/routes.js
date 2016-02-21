@@ -76,8 +76,6 @@ router.post(config.routes.move, function(req, res) {
 	var walls = req.body.walls;
 	var gold = req.body.gold; 
 	
-	console.log('Game data rec: ',(snakes&&food&&walls&&gold)!=='undefined')
-	console.log('Game data : ',snakes, food,walls,gold)
 	// Board dimensions
 	var boardWidth = req.body.width;
 	var boardHeight = req.body.height;
@@ -93,12 +91,12 @@ router.post(config.routes.move, function(req, res) {
 	var myHead = mySnake.coords[0];
 	console.log('My head is at: ',myHead)
 
-	//if my snake is dead -> ignore
+	//if my snake is dead -> ignore request
 	if (mySnake.status === "dead") {
 		return res.status(404);
 	}
 	console.log('I am still alive!')
-	//console.log(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health)
+
 	//generate data matrices
 	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
@@ -168,8 +166,6 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
           arr[x][y] = 0;    
       }    
   }
-
-	console.log('init matrix complete')
 	
 	//weights for game objects
   //vals = {"snake":-200, "walls":-300, "gold":101, "food":100}
@@ -179,8 +175,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     coords = food[i]    
     arr[coords[1]][coords[0]] = 100
   }
-	console.log('added food')
-
+	
 	//add snakes to weight matrix
   for(i=0; i<snakes.length;i++){
     asnake = snakes[i]
@@ -190,8 +185,6 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     }
   }
 	
-	console.log('added snakes')
-	//console.log(walls)
 	if(typeof walls !== "undefined"){
 		//add walls to weight matrix
 		for(i=0; i<walls.length;i++){
@@ -199,8 +192,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 			arr[coords[1]][coords[0]] = -300
 		}
 	}
-	console.log('added walls')
-	//add gold to weight matrix
+
 	if(typeof gold !== "undefined"){
 		for(i=0; i<gold.length;i++){
 			coords = gold[i]    
@@ -209,10 +201,6 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 
 	}
   
-	console.log('added gold')
-	
-	prettyPrint(arr)
-
   return arr
 }
 
@@ -247,7 +235,10 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
-        directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]);
+				if(x !== headX && y !== headY){ //don't include current cell weight
+					directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]);
+				}
+        
       }
     }
   }
