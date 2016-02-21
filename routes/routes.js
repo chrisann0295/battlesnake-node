@@ -1,28 +1,9 @@
 var config = require('../config.json');
 var express = require('express');
 var router = express.Router();
-var Cell = require('../cell.js')
-var Gen = require('../gen.js')
-// var moveCalculator = require('../moveCalculator')
-
-//global snake info
-var total_score = 0;
 
 //map holds state of all running games (keys are the gameid)
 var games = {};
-
-//example game state
-// var game = {
-//     id: "testing",
-//     state: "alive",
-//     coords: [
-//         [0, 0]
-//     ],
-//     score: 0,
-//     width: 30,
-//     height: 20
-// }
-// games["testing"] = game;
 
 // Get the state of the snake
 router.get(config.routes.state, function(req, res) {
@@ -36,8 +17,6 @@ router.get(config.routes.state, function(req, res) {
       taunt: config.snake.taunt.state,
       games: games
   };
-
-
   // console.log(data);
   //return all game states
   return res.json(data);
@@ -46,28 +25,26 @@ router.get(config.routes.state, function(req, res) {
 // Start
 router.post(config.routes.start, function(req, res) {
 
-    //log the game id
-  console.log('Game ID:', req.body.game);
-  gid = req.body.game;
+  //log the game id
+  console.log('Game: ', req.body.game, ' has begun!');
+  gameid = req.body.game;
 
   //create new game state
-  games[gid] = {
-    id: gid,
+  games[gameid] = {
+    id: gameid,
     state: "alive",
-    coords: [],
-    score: 0,
     turn: 0,
     width: req.body.width,
     height: req.body.height
   }
 
-    // Response data
-    var data = {
-      name: config.snake.name,
-      color: config.snake.color,
-      head_url: config.snake.head_url,
-      taunt: config.snake.taunt.start
-    };
+	// Response data
+	var data = {
+		name: config.snake.name,
+		color: config.snake.color,
+		head_url: config.snake.head_url,
+		taunt: config.snake.taunt.start
+	};
 
     return res.json(data);
 });
@@ -76,84 +53,114 @@ router.post(config.routes.start, function(req, res) {
 
 // Move
 router.post(config.routes.move, function(req, res) {
-  console.log("####################INSIDE MOVE FUNCTION.....", req.body)
-    //find game state in hash table
-    var gameid = req.body.game;
-    var currState = games[gameid];
+	console.log('Received /MOVE request')
 
-    //catch games that have ended/haven't begun
-    if (currState === "null" || currState === "undefined") {
-        // res.end();
-        return  res.status(404);
+	//find game state in hash table
+	var gameid = req.body.game;
+	var currentGame = games[gameid];
 
-    } else {
- 
-    var turn = req.body.turn;
-    var snakes = req.body.snakes;
-    var food = req.body.food;
-    var walls = req.body.walls;
-    var gold = req.body.gold; 
+	//catch games that have ended/haven't begun
+	if (currentGame === "undefined" || currentGame === "null") {
+		res.status(404);
+		return;
+	}
 
-    // Board dimensions
-    var boardHeight = req.body.height;
-    var boardWidth = req.body.width;
+	console.log("Valid game: ",(currentGame!=="undefined"))
+	
+	//current game stats
+	var turn = req.body.turn;
+	
+	//locations of game objects
+	var snakes = req.body.snakes;
+	var food = req.body.food;
+	var walls = req.body.walls;
+	var gold = req.body.gold; 
+	
+	console.log('Game data rec: ',(snakes&&food&&walls&&gold)!=='undefined')
+	
+	// Board dimensions
+	var boardWidth = req.body.width;
+	var boardHeight = req.body.height;
+	console.log('Board Size:',boardWidth,boardHeight)
 
-    var mysnake;
+	//find mySnake
+	var mySnake;
+	for (i = 0; i < snakes.length; i++) {
+			if (snakes[i].id === "a1e0221f-66e8-4f79-a125-6abdef413a9a") {
+					mySnake = snakes[i];
+			}
+	}
+	var myHead = mySnake.coords[0];
+	console.log('My head is at: ',myHead)
 
-    //find my snake
-    for (i = 0; i < snakes.length; i++) {
-        if (snakes[i].id === "a1e0221f-66e8-4f79-a125-6abdef413a9a") {
-            mysnake = snakes[i];
-        }
-    }
+	//if my snake is dead -> ignore
+	if (mySnake.status === "dead") {
+		return res.status(404);
+	}
+	console.log('I am still alive!')
 
-    // console.log('$$$$$$$$$$ my snake is:', mysnake);
+	//generate data matrices
+	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
+	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
+	
+	console.log('-----------WM:----------- \n')
+	prettyPrint(weightMatrix)
+	console.log('\n-----------DM:----------- \n')
+	prettyPrint(distanceMatrix)
+	
+	
+	//find optimal move
+	var mymove = moveCalculator(myHead[0], myHead[1], boardWidth, boardHeight, weightMatrix);
+	console.log('calculated move is: ', mymove)
 
-    var myHead = mysnake.coords[0];
+	// Response data
+	var data = {
+			move: mymove, // one of: ["up", "down", "left", "right"]
+			taunt: 'What?!' || config.snake.taunt.move
+	};
 
-    //is snake dead?
-    if (mysnake.status === "dead") {
-      res.status(404);
-      return;
-
-    } else {
-      console.log('$$$$$$ wefsdmfdkjfndkjgnkjfg', games)
-        // currState.height, snakes,food,walls,gold, mysnake.health)
-
-      var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mysnake.health);
-      mymove = moveCalculator(myHead[0], myHead[1], boardWidth, boardHeight, weightMatrix);
-
-       console.log('$$$$$$ mymove is:', mymove)
-
-    }
-        // Response data
-        var data = {
-            move: mymove, // one of: ["up", "down", "left", "right"]
-            taunt: 'What?!' || config.snake.taunt.move
-        };
-
-        return res.send(data);
-    }
+	return res.send(data);
 });
 
 // End the session
 router.post(config.routes.end, function(req, res) {
+	//get gameid
+	var gameid = req.body.game;
 
-    var gameid = req.body.game;
-    //update global score
-    total_score += games[gameid].score;
-    //delete game state from map
-    delete games[gameid];
+	//delete game state from map
+	delete games[gameid];
 
-    // We don't need a response so just send back a 200
-    res.status(200)
-    return res.json({}).end();
-
-    return;
+	// We don't need a response so just send back a 200
+	res.status(200)
+	return res.json({}).end();
 });
 
+function generateDistanceMatrix (x,y, width, height){
+
+	//init 2d array to zero
+  var distanceMatrix = [];
+  for(var x = 0; x < width; x++){
+      distanceMatrix[x] = [];    
+      for(var y = 0; y < height; y++){ 
+          distanceMatrix[x][y] = 0;    
+      }    
+  }
+  
+	//find distances to all points
+  for(a=0; a<width; a++){
+    for(b=0; b<height; b++){
+      distx = Math.abs((a-x))
+      disty = Math.abs((b-y))
+      distanceMatrix[a][b] = (distx+disty)
+    }
+  }
+	
+  return distanceMatrix;
+}
 
 function generateWeightMatrix (width, height, snakes, food, walls, gold, health){
+
+	//init 2d matrix to 0
   var arr = [];
   for(var x = 0; x < width; x++){
       arr[x] = [];    
@@ -162,14 +169,16 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
       }    
   }
 
-  var food = (100-health)*2 
-  vals = {"snake":-200, "wall":-300, "gold":100, "food":food}
+	//weights for game objects
+  vals = {"snake":-200, "wall":-300, "gold":101, "food":100}
   
+	//add food to weight matrix
   for(i=0; i<food.length;i++){
     coords = food[i]    
     arr[coords[0]][coords[1]] = vals['food']
   }
 
+	//add snakes to weight matrix
   for(i=0; i<snakes.length;i++){
     asnake = snakes[i]
     for(j=0; j<asnake.coords.length;j++){
@@ -178,30 +187,27 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     }
   }
 
-
-
+	//add walls to weight matrix
   for(i=0; i<walls.length;i++){
     coords = walls[i]   
     arr[coords[0]][coords[1]] = vals['wall']
   }
 
 
+	//add gold to weight matrix
   for(i=0; i<gold.length;i++){
     coords = gold[i]    
     arr[coords[0]][coords[1]] = vals['gold']
   }
 
-  console.log("generateWeightMatrix\n" ,arr)
-
   return arr
-
 }
 
 
 function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   var directionArray = [0,0,0,0];
 
-  console.log("$$$$$$$$$$$$$$$$$$ moveCalculator")
+  console.log("Calculating our move")
   var tempX
     , tempY
     , distanceMatrix;
@@ -226,9 +232,6 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   
     distanceMatrix = generateDistanceMatrix(tempX, tempY, boardWidth, boardHeight);
 
-  console.log("$$$$$$$$$$$$$$$$$$ distanceMatrix\n", distanceMatrix)
-
-
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
         directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]);
@@ -237,25 +240,21 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   }
 
   if (headX === 0) {
-    console.log("$$$$$$$$$$$$")
     directionArray[3] = -9999999;
   } 
 
   if (headX === boardWidth -1) {
-    console.log("$$$$$$$$$$$$wdew")
     directionArray[1] = -9999999;
   }
 
   if (headY === 0) {
-    console.log("$$$$$$$$$$$$fdnfnf")
     directionArray[0] = -9999999;
   }
   if (headY === boardHeight - 1) {
-    console.log("$$$$$$$$$$wkjdnwjkedwje$$")
     directionArray[2] = -9999999;
   }
 
-console.log(directionArray)
+	console.log('Possible moves: ', directionArray)
   var bestMove = 0;
   for (var i = 0; i < 4; i++) {
     if (directionArray[i] > directionArray[bestMove]) {
@@ -281,30 +280,22 @@ console.log(directionArray)
 
 };
 
-
-function generateDistanceMatrix (x,y, width, height){
-  // var distanceMatrix = [width][height];
-
-  var distanceMatrix = [];
-  for(var x = 0; x < width; x++){
-      distanceMatrix[x] = [];    
-      for(var y = 0; y < height; y++){ 
-          distanceMatrix[x][y] = 0;    
-      }    
-  }
+function prettyPrint(matrix){
   
-  for(a=0; a<width; a++){
-    for(b=0; b<height; b++){
-      distx = Math.abs((a-x))
-      disty = Math.abs((b-y))
-      distanceMatrix[a][b] = (distx+disty)
-    }
-  }
+	for (var i = 0; i < matrix.length; i++){
+		mystring = ""; 
+		for (var j = 0; j < matrix[i].length; j++){
+			whitespace = "";  		
+			if (matrix[i][j] >= 0 && matrix[i][j] < 100)
+				whitespace = "   "; 
+			if (matrix[i][j] >= 100)
+				whitespace = " ";
+			mystring = mystring + whitespace + matrix[i][j] + ","; 
+		}
+		console.log("["+mystring+"]"); 
+	}
+ }
 
-  console.log("distanceMatrix" + distanceMatrix)
-
-  return distanceMatrix;
-}
 
 
 
