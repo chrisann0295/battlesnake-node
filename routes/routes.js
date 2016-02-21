@@ -245,8 +245,6 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 			dir['north']=true
 			 
 		}else{
-			//default
-			dir['south']=true
 		}
 		
 	}
@@ -282,7 +280,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 		return "north"
 		
 	}else{
-		return "east"
+		return "south"
 	}
 
 };
