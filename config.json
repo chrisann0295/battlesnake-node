@@ -10,7 +10,7 @@
   "snake" : {
     "name": "bao",
     "color": "#996633",
-    "head_url": "http://images.clipartpanda.com/snake-head-clip-art-black-and-white-BAW-SNAKE-05-R.png",
+    "head_url": "images.clipartpanda.com/snake-head-clip-art-black-and-white-BAW-SNAKE-05-R.png/",
     "taunt": {
       "state": "Most serpently ready!!!",
       "move": "Outta my way snake!",

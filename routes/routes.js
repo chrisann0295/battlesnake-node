@@ -101,10 +101,10 @@ router.post(config.routes.move, function(req, res) {
 	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
 	
-	console.log('-----------WM:----------- \n')
-	prettyPrint(weightMatrix)
-	console.log('\n-----------DM:----------- \n')
-	prettyPrint(distanceMatrix)
+	//console.log('-----------WM:----------- \n')
+	//prettyPrint(weightMatrix)
+	//console.log('\n-----------DM:----------- \n')
+	//prettyPrint(distanceMatrix)
 	
 	
 	//find optimal move
@@ -114,7 +114,7 @@ router.post(config.routes.move, function(req, res) {
 	// Response data
 	var data = {
 			move: mymove, // one of: ["up", "down", "left", "right"]
-			taunt: 'What?!' || config.snake.taunt.move
+			taunt: mySnake.coords || config.snake.taunt.move
 	};
 
 	return res.send(data);
