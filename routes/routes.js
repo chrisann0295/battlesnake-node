@@ -100,7 +100,7 @@ router.post(config.routes.move, function(req, res) {
 	console.log('I am still alive!')
 	//console.log(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health)
 	//generate data matrices
-	//var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
+	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
 	
 	console.log('-----------WM:----------- \n')
@@ -169,6 +169,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
       }    
   }
 
+	prettyPrint(arr)
 	//weights for game objects
   vals = {"snake":-200, "wall":-300, "gold":101, "food":100}
   
@@ -199,6 +200,8 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     coords = gold[i]    
     arr[coords[0]][coords[1]] = vals['gold']
   }
+	
+	prettyPrint(arr)
 
   return arr
 }
