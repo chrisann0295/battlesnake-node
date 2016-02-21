@@ -175,7 +175,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 	//add food to weight matrix
   for(i=0; i<food.length;i++){
     coords = food[i]    
-    arr[coords[0]][coords[1]] = vals['food']
+    arr[coords[1]][coords[0]] = vals['food']
   }
 
 	//add snakes to weight matrix
@@ -183,21 +183,21 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     asnake = snakes[i]
     for(j=0; j<asnake.coords.length;j++){
       coords = asnake.coords[j]   
-      arr[coords[0]][coords[1]] = vals['snake']
+      arr[coords[1]][coords[0]] = vals['snake']
     }
   }
 
 	//add walls to weight matrix
   for(i=0; i<walls.length;i++){
     coords = walls[i]   
-    arr[coords[0]][coords[1]] = vals['wall']
+    arr[coords[1]][coords[0]] = vals['wall']
   }
 
 
 	//add gold to weight matrix
   for(i=0; i<gold.length;i++){
     coords = gold[i]    
-    arr[coords[0]][coords[1]] = vals['gold']
+    arr[coords[1]][coords[0]] = vals['gold']
   }
 
   return arr
@@ -263,13 +263,13 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   }
 
   switch(bestMove) {
-    case 0: return "south"
+    case 0: return "north"
             break;
 
     case 1: return "west"
             break;
 
-    case 2: return "north"
+    case 2: return "south"
             break;
 
     case 3: return "east"
