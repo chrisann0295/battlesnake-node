@@ -2,6 +2,7 @@ var directionArray = [4]
   , matrixGenerators = require('./gen');
 
 function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
+  console.log("$$$$$$$$$$$$$$$$$$ moveCalculator")
   var tempX
     , tempY
     , distanceMatrix;
@@ -24,11 +25,11 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
       tempY = headY;
     }
   
-    distanceMatrix = matrixGenerators.generateDistanceMatrix(tempX, tempY, boardHeight, boardWidth);
+    distanceMatrix = matrixGenerators.generateDistanceMatrix(tempX, tempY, boardWidth, boardHeight);
 
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
-        directionArray[dir] = directionArray[dir] + (weightMatrix[x][y] * distanceMatrix[x][y]);
+        directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]);
       }
     }
   }
@@ -58,6 +59,30 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 
 };
 
+
+function generateDistanceMatrix (x,y, width, height){
+  // var distanceMatrix = [width][height];
+
+  var distanceMatrix = [];
+  for(var x = 0; x < width; x++){
+      distanceMatrix[x] = [];    
+      for(var y = 0; y < height; y++){ 
+          distanceMatrix[x][y] = 0;    
+      }    
+  }
+  
+  for(a=0; a<width; a++){
+    for(b=0; b<height; b++){
+      distx = Math.abs((a-x))
+      disty = Math.abs((b-y))
+      distanceMatrix[a][b] = (distx+disty)
+    }
+  }
+
+  console.log("distanceMatrix" + distanceMatrix)
+
+  return distanceMatrix;
+}
 
 module.exports = {
   moveCalculator: moveCalculator

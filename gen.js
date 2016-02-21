@@ -1,4 +1,6 @@
 exports.generateWeightMatrix = function(width, height, snakes, food, walls, coin, health){
+	console.log("generateWeightMatrix insidee here $$$")
+
 	var arr = [width][height]; //0,0 to h-1,w-1
 	var health = 100; //TODO call health()
 	var food = (100-health)*2 
@@ -26,6 +28,9 @@ exports.generateWeightMatrix = function(width, height, snakes, food, walls, coin
 		coords = gold[i]		
 		arr[coords[0]][coords[1]] = vals['coin']
 	}
+
+	console.log("generateWeightMatrix" + arr)
+
 	return arr
 
 }
@@ -47,8 +52,16 @@ exports.genDW = function(x,y,arr){
 	return dwArr
 }
 
-exports.generateDistanceMatrix = function(x,y, height, width){
-	var distanceMatrix = [width][height];
+exports.generateDistanceMatrix = function(x,y, width, height){
+	// var distanceMatrix = [width][height];
+
+	var distanceMatrix = [];
+  for(var x = 0; x < width; x++){
+      distanceMatrix[x] = [];    
+      for(var y = 0; y < height; y++){ 
+          distanceMatrix[x][y] = 0;    
+      }    
+  }
 	
 	for(a=0; a<width; a++){
 		for(b=0; b<height; b++){
@@ -57,6 +70,8 @@ exports.generateDistanceMatrix = function(x,y, height, width){
 			distanceMatrix[a][b] = (distx+disty)
 		}
 	}
+
+	console.log("distanceMatrix" + distanceMatrix)
 
 	return distanceMatrix;
 }
