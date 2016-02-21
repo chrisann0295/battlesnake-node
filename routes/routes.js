@@ -98,13 +98,13 @@ router.post(config.routes.move, function(req, res) {
 		return res.status(404);
 	}
 	console.log('I am still alive!')
-	console.log(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health)
+	//console.log(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health)
 	//generate data matrices
-	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
+	//var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
 	
 	console.log('-----------WM:----------- \n')
-	prettyPrint(weightMatrix)
+	//prettyPrint(weightMatrix)
 	console.log('\n-----------DM:----------- \n')
 	prettyPrint(distanceMatrix)
 	
