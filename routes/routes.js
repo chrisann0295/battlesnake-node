@@ -231,7 +231,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 
     for (var x = 0; x < boardWidth; x++) {
       for (var y = 0; y < boardHeight; y++) {
-        directionArray[dir] = directionArray[dir] + (weightMatrix[x][y] * distanceMatrix[x][y]);
+        directionArray[dir] = directionArray[dir] + (weightMatrix[x][y]);
       }
     }
   }
