@@ -171,7 +171,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 
 	prettyPrint(arr)
 	//weights for game objects
-  vals = {"snake":-200, "wall":-300, "gold":101, "food":100}
+  vals = {"snake":-200, "walls":-300, "gold":101, "food":100}
   
 	//add food to weight matrix
   for(i=0; i<food.length;i++){
