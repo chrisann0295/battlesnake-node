@@ -95,8 +95,8 @@ router.post(config.routes.move, function(req, res) {
     var gold = req.body.gold; 
 
     // Board dimensions
-    var boardHeight = req.height;
-    var boardWidth = req.width;
+    var boardHeight = req.body.height;
+    var boardWidth = req.body.width;
 
     var mysnake;
 
