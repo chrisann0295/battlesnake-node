@@ -229,10 +229,12 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 	x = dest[0]
 	y = dest[1]
 	
+	console.log("dest: ",dest)
+	
 	if(x-headX > 0){
-		dir['west']=true
-	}else if(x-headX < 0){
 		dir['east']=true
+	}else if(x-headX < 0){
+		dir['west']=true
 		 
 	}else{
 		
