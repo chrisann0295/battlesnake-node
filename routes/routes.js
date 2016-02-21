@@ -263,16 +263,16 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   }
 
   switch(bestMove) {
-    case 0: return "north"
+    case 0: return "south"
             break;
 
-    case 1: return "east"
+    case 1: return "west"
             break;
 
-    case 2: return "south"
+    case 2: return "north"
             break;
 
-    case 3: return "west"
+    case 3: return "east"
             break;
   }
 
