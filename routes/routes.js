@@ -192,7 +192,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 	
 	console.log('added snakes')
 	console.log(walls)
-	if(walls != "undefined"){
+	if(walls !== "undefined"){
 		//add walls to weight matrix
 		for(i=0; i<walls.length;i++){
 			coords = walls[i]   
@@ -201,7 +201,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 	}
 	console.log('added walls')
 	//add gold to weight matrix
-	if(gold != "undefined"){
+	if(gold !== "undefined"){
 		for(i=0; i<gold.length;i++){
 			coords = gold[i]    
 			arr[coords[1]][coords[0]] = 101
