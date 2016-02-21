@@ -252,6 +252,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 	}
 
 
+	/*
   if (headX === 0) {
     dir['west'] = false
   } 
@@ -266,7 +267,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
   if (headY === boardHeight - 1) {
     dir['south'] = false
   }
-
+*/
 	console.log('Possible moves: ', dir)
   
 	if(dir['east'] ===true){
@@ -281,7 +282,7 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
 		return "north"
 		
 	}else{
-		return null
+		return ""
 	}
 
 };
