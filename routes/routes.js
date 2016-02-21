@@ -98,7 +98,7 @@ router.post(config.routes.move, function(req, res) {
 		return res.status(404);
 	}
 	console.log('I am still alive!')
-
+	console.log(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health)
 	//generate data matrices
 	var weightMatrix = generateWeightMatrix(boardWidth, boardHeight, snakes,food,walls,gold, mySnake.health);
 	var distanceMatrix = generateDistanceMatrix(myHead[0],myHead[1],boardWidth,boardHeight)
@@ -175,7 +175,7 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
 	//add food to weight matrix
   for(i=0; i<food.length;i++){
     coords = food[i]    
-    arr[coords[1]][coords[0]] = vals['food']
+    arr[coords[0]][coords[1]] = vals['food']
   }
 
 	//add snakes to weight matrix
@@ -183,21 +183,21 @@ function generateWeightMatrix (width, height, snakes, food, walls, gold, health)
     asnake = snakes[i]
     for(j=0; j<asnake.coords.length;j++){
       coords = asnake.coords[j]   
-      arr[coords[1]][coords[0]] = vals['snake']
+      arr[coords[0]][coords[1]] = vals['snake']
     }
   }
 
 	//add walls to weight matrix
   for(i=0; i<walls.length;i++){
     coords = walls[i]   
-    arr[coords[1]][coords[0]] = vals['wall']
+    arr[coords[0]][coords[1]] = vals['wall']
   }
 
 
 	//add gold to weight matrix
   for(i=0; i<gold.length;i++){
     coords = gold[i]    
-    arr[coords[1]][coords[0]] = vals['gold']
+    arr[coords[0]][coords[1]] = vals['gold']
   }
 
   return arr
@@ -266,13 +266,13 @@ function moveCalculator(headX, headY, boardWidth, boardHeight, weightMatrix) {
     case 0: return "north"
             break;
 
-    case 1: return "west"
+    case 1: return "east"
             break;
 
     case 2: return "south"
             break;
 
-    case 3: return "east"
+    case 3: return "west"
             break;
   }
 
